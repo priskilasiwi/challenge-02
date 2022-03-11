@@ -25,13 +25,21 @@ const dataPenjualanPakAldi = [
     }
   ]
 
-    function hitungTotalPenjualan(dataPenjualan) {
-        let sum = 0;
-        for(i=0; i <= dataPenjualanPakAldi.length; i++){
-            sum = sum + dataPenjualanPakAldi[i].totalTerjual;
-            return sum;
+    // function hitungTotalPenjualan(dataPenjualan) {
+    //     let sum = 0;
+    //     for(i=0; i <= dataPenjualanPakAldi.length; i++){
+    //         sum = sum + dataPenjualanPakAldi[i].totalTerjual;
+    //         return sum;
+    //     }
+
+    // }
+
+    const getTotalPenjualan = () => {
+        let totalPenjualan = 0
+        for(let i = 0; i < dataPenjualanPakAldi.length; i++){
+            totalPenjualan += dataPenjualanPakAldi[i].totalTerjual;
         }
-
+        return totalPenjualan;
     }
-
-  console.log(hitungTotalPenjualan(dataPenjualanPakAldi));
+    
+    console.log(getTotalPenjualan(dataPenjualanPakAldi));
