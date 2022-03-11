@@ -37,24 +37,52 @@ const dataPenjualanNovel = [
     },
   ];
 
-  let totaluntung = dataPenjualanNovel.map(tot => (tot.hargaJual - tot.hargaBeli) * tot.totalTerjual).reduce((previous, current) => previous + current,0);
-  let totmodal = dataPenjualanNovel.map(tot => (tot.hargaBeli * (tot.totalTerjual + tot.sisaStok))).reduce((previous, current) => previous + current,0);
-
-  const number = totaluntung.toString().split('').reverse().join('');
-  const convert = number.match(/\d{1,3}/g);
-  const rupiah = 'Rp ' + convert.join('.').split('').reverse().join('');
-
-  const number2 = totmodal.toString().split('').reverse().join('');
-  const konfert = number2.match(/\d{1,3}/g);
-  const rupiah2 = 'Rp ' + konfert.join('.').split('').reverse().join('');
-
-  const max = Math.max.apply(Math, dataPenjualanNovel.map(maximum => maximum.totalTerjual));
-  console.log(max);
-
-  //if(dataPenjualanNovel.totalTerjual >)
-
-  console.log(rupiah);
-  console.log(rupiah2);
+ 
   
-//   const result = data.filter((items) => items.penulis === 'Tere Liye').reduce((acc,curr) => acc.terjual + curr.terjual);
-//   console.log(result);
+
+  const getInfoPenjualan = () => {
+    let totalKeuntungan = 0;
+    let totalModal = 0;
+    let totalTerjual = 0;
+    let namaProdukTerlaris = '';
+    let namaPenulisTerlaris = '';
+    let persentaseKeuntungan = 0;
+
+    // Total Modal, Terjual dan Keuntungan
+    dataPenjualanNovel.forEach(item => {
+      totalKeuntungan += (item.hargaJual - item.hargaBeli) * item.totalTerjual;
+      totalModal += item.hargaBeli * item.totalTerjual;
+      totalTerjual += item.totalTerjual;
+      // Nama Produk
+      if (namaProdukTerlaris === '') {
+        return namaProdukTerlaris = item.namaProduk;
+      } else if (item.totalTerjual > totalTerjual) {
+        return namaProdukTerlaris = item.namaProduk;
+      }
+      // Nama Penulis Terlaris
+      if (namaPenulisTerlaris === '') {
+        return namaPenulisTerlaris = item.penulis;
+      } else if (item.totalTerjual > totalTerjual) {
+        return namaPenulisTerlaris = item.penulis;
+      }
+    });
+    // Persentase Keuntungan
+    persentaseKeuntungan = (totalKeuntungan / totalModal) * 100;
+    return {
+      // totalkeuntungan dan total modal dalam bentuk rupiah
+      totalKeuntungan: new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+      }).format(totalKeuntungan),
+      totalModal: new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+      }).format(totalModal),
+      persentaseKeuntungan : persentaseKeuntungan.toFixed(3) + "%", 
+      namaProdukTerlaris,
+      namaPenulisTerlaris,
+    };
+  }
+
+
+  console.log(getInfoPenjualan());
